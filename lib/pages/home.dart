@@ -18,7 +18,25 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static  final List<Widget> _pages = <Widget>[
-    CurrentPositionMap(),
+    Stack(
+      children: [
+        Positioned(top: 0, left: 0, right: 0, bottom: 0, child: CurrentPositionMap()),
+        Positioned(top: 0, left:0, right: 0, child: Container(
+          height: 200,
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.grey,
+                  Colors.transparent,
+                ],
+              )
+          ),
+          child: Text("Hello"),
+        )),
+      ]
+    ),
     const RecognitionSheetListPage(),
     const Center(
       child: Padding(
