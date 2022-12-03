@@ -16,12 +16,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
-    Center(
-      child: Icon(
-        Icons.call,
-        size: 150,
-      ),
-    ),
+    Center(child: Text("hello"),),
     Center(
       child: Icon(
         Icons.camera,
@@ -97,3 +92,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
