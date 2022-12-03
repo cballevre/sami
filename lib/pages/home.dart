@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sami/utils/palette.dart';
 
 import 'package:sami/widgets/fab_with_icons.dart';
 import 'package:sami/widgets/fab_bottom_app_bar.dart';
@@ -57,7 +58,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("osm"),
+        title: Text("SAMi"),
+        backgroundColor: Palette.primary.shade500,
+        centerTitle: true,
       ),
       body: IndexedStack(
           index: _selectedIndex,
@@ -73,13 +76,13 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: FABBottomAppBar(
         color: Colors.black,
-        selectedColor: Colors.orange,
+        selectedColor: Palette.primary.shade500,
         backgroundColor: Colors.white,
         notchedShape: CircularNotchedRectangle(),
         onTabSelected: _onItemTapped,
         items: [
-          FABBottomAppBarItem(iconData: Icons.home, text: 'Home'),
-          FABBottomAppBarItem(iconData: Icons.list, text: 'Reconnaissance'),
+          FABBottomAppBarItem(iconData: Icons.home, text: 'Accueil'),
+          FABBottomAppBarItem(iconData: Icons.list, text: 'Fiches'),
           FABBottomAppBarItem(iconData: Icons.info, text: 'Infos'),
           FABBottomAppBarItem(iconData: Icons.settings, text: 'Paramètres'),
         ]
