@@ -36,9 +36,11 @@ class _RecognitionSheetPageState extends State<RecognitionSheetPage> {
                   ElevatedButton(
                     style: style,
                     onPressed: () {
-                      MaterialPageRoute(
-                        builder: (context) => const CreateSamplePage(),
-                      ),
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CreateSamplePage(),
+                        ),
+                      );
                     },
                     child: const Text('Prélévement'),
                   ),
