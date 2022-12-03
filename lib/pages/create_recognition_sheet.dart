@@ -3,6 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sami/pages/home.dart';
 import 'package:sami/pages/recognition_sheet.dart';
 import 'package:sami/utils/palette.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateRecognitionSheetPage extends StatefulWidget {
   const CreateRecognitionSheetPage({super.key});
@@ -37,6 +38,22 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
     'is_new_arrival': FormControl<bool>(value: false),
   });
 
+  Future<void> uploadingData(
+  String sampler_firstname,
+  String sampler_lastname,
+  String sampler_organism,
+  String sampler_phone_number,
+  bool is_judiciary_process,
+  ) async {
+    await FirebaseFirestore.instance.collection("recognition_sheet").add({
+      'sampler_firstname': sampler_firstname,
+      'sampler_lastname': sampler_lastname,
+      'sampler_organism': sampler_organism,
+      'sampler_phone_number': sampler_phone_number,
+      'is_judiciary_process': is_judiciary_process,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +63,10 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
         centerTitle: true,
       ),
       body:  SingleChildScrollView(
-          child: Stepper(
+          child: ReactiveFormBuilder(
+            form: buildGeneralityForm,
+            builder: (context, form, child) {
+              return Stepper(
           currentStep: _index,
           onStepCancel: () {
             if (_index > 0) {
@@ -63,6 +83,18 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                 _index += 1;
               });
             } else if(_index == 2) {
+              if (form.valid) {
+                print(form.value);
+              } else {
+                form.markAllAsTouched();
+              }
+              uploadingData(
+                  form.value['sampler_firstname'] as String,
+                  form.value['sampler_lastname'] as String,
+                  form.value['sampler_organism'] as String,
+                  form.value['sampler_phone_number'] as String,
+                  form.value['is_judiciary_process'] as bool
+              );
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const RecognitionSheetPage(),
@@ -80,10 +112,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
               title: const Text('Généralités'),
               content: Container(
               alignment: Alignment.centerLeft,
-              child: ReactiveFormBuilder(
-                  form: buildGeneralityForm,
-                  builder: (context, form, child) {
-                    return Column(
+              child: Column(
                       children: [
                         ReactiveTextField<String>(
                           formControlName: 'sampler_firstname',
@@ -152,11 +181,12 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                           ],
                         ),
                       ],
-                    );
-                  },
+
+
+
+                  ),
+                )
               ),
-              ),
-            ),
             Step(
               title: const Text('Site'),
               content: ReactiveFormBuilder(
@@ -204,7 +234,9 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                   child: const Text('Site')),
             ),
           ],
-        )
+        );
+          }
+      )
       )
     );
   }
