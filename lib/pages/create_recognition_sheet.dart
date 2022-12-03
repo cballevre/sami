@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sami/pages/home.dart';
 import 'package:sami/pages/recognition_sheet.dart';
 import 'package:sami/utils/palette.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,35 +14,31 @@ class CreateRecognitionSheetPage extends StatefulWidget {
 class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage> {
   int _index = 0;
 
-  FormGroup buildGeneralityForm() => fb.group(<String, Object>{
-    'sampler_firstname': FormControl<String>(
-      validators: [Validators.required],
-    ),
-    'sampler_lastname': FormControl<String>(
-      validators: [Validators.required],
-    ),
-    'sampler_organism': FormControl<String>(
-      validators: [Validators.required],
-    ),
-    'sampler_phone_number': FormControl<String>(),
-    'is_judiciary_process' : FormControl<bool>(value: false),
-  });
+  FormGroup buildForm() => fb.group(<String, Object>{
+    'generality': FormGroup({
+      'sampler_firstname': FormControl<String>(validators: [Validators.required]),
+      'sampler_lastname': FormControl<String>(validators: [Validators.required]),
+      'sampler_organism': FormControl<String>(validators: [Validators.required]),
+      'sampler_phone_number': FormControl<String>(),
+      'is_judiciary_process' : FormControl<bool>(value: false),
+    }),
+    'site': FormGroup({
+      'site_name': FormControl<String>(),
+      'is_site_polluted': FormControl<bool>(value: false),
+      'is_new_arrival': FormControl<bool>(value: false),
+    })
 
-  FormGroup buildSiteForm() => fb.group(<String, Object>{
-    'position_latitude': FormControl<String>(),
-    'position_longitude': FormControl<String>(),
-    'position_altitude': FormControl<String>(),
-    'site_name': FormControl<String>(),
-    'is_site_polluted': FormControl<bool>(value: false),
-    'is_new_arrival': FormControl<bool>(value: false),
   });
 
   Future<void> uploadingData(
-  String sampler_firstname,
-  String sampler_lastname,
-  String sampler_organism,
-  String sampler_phone_number,
-  bool is_judiciary_process,
+    String sampler_firstname,
+    String sampler_lastname,
+    String sampler_organism,
+    String? sampler_phone_number,
+    bool is_judiciary_process,
+    String site_name,
+    bool is_site_polluted,
+    bool is_new_arrival
   ) async {
     await FirebaseFirestore.instance.collection("recognition_sheets").add({
       'sampler_firstname': sampler_firstname,
@@ -51,6 +46,10 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
       'sampler_organism': sampler_organism,
       'sampler_phone_number': sampler_phone_number,
       'is_judiciary_process': is_judiciary_process,
+      'site_name': site_name,
+      'is_site_polluted': is_site_polluted,
+      'is_new_arrival': is_new_arrival,
+      'created_at': DateTime.now().toUtc()
     });
   }
 
@@ -64,7 +63,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
       ),
       body:  SingleChildScrollView(
           child: ReactiveFormBuilder(
-            form: buildGeneralityForm,
+            form: buildForm,
             builder: (context, form, child) {
               return Stepper(
           currentStep: _index,
@@ -79,27 +78,38 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
           },
           onStepContinue: () {
             if (_index <= 1) {
-              setState(() {
-                _index += 1;
-              });
+              if((_index == 0 && form.control('generality').valid)
+                  ||(_index == 1 && form.control('site').valid) ) {
+                setState(() {
+                  _index += 1;
+                });
+              } else {
+                if(_index == 0) {
+                  form.control('generality').markAllAsTouched();
+                } else if(_index == 1) {
+                  form.control('site').markAllAsTouched();
+                }
+              }
             } else if(_index == 2) {
               if (form.valid) {
-                print(form.value);
+                uploadingData(
+                    form.control('generality.sampler_firstname').value,
+                    form.control('generality.sampler_lastname').value,
+                    form.control('generality.sampler_organism').value,
+                    form.control('generality.sampler_phone_number').value,
+                    form.control('generality.is_judiciary_process').value,
+                    form.control('site.site_name').value,
+                    form.control('site.is_site_polluted').value,
+                    form.control('site.is_new_arrival').value
+                );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const RecognitionSheetPage(),
+                  ),
+                );
               } else {
                 form.markAllAsTouched();
               }
-              uploadingData(
-                  form.value['sampler_firstname'] as String,
-                  form.value['sampler_lastname'] as String,
-                  form.value['sampler_organism'] as String,
-                  form.value['sampler_phone_number'] as String,
-                  form.value['is_judiciary_process'] as bool
-              );
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const RecognitionSheetPage(),
-                ),
-              );
             }
           },
           onStepTapped: (int index) {
@@ -115,7 +125,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
               child: Column(
                       children: [
                         ReactiveTextField<String>(
-                          formControlName: 'sampler_firstname',
+                          formControlName: 'generality.sampler_firstname',
                           validationMessages: {
                             ValidationMessage.required: (_) =>
                             'The firstname must not be empty'
@@ -130,7 +140,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                         ),
                         const SizedBox(height: 16.0),
                         ReactiveTextField<String>(
-                          formControlName: 'sampler_lastname',
+                          formControlName: 'generality.sampler_lastname',
                           validationMessages: {
                             ValidationMessage.required: (_) =>
                             'The lastname must not be empty',
@@ -145,7 +155,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                         ),
                         const SizedBox(height: 16.0),
                         ReactiveTextField<String>(
-                          formControlName: 'sampler_organism',
+                          formControlName: 'generality.sampler_organism',
                           validationMessages: {
                           ValidationMessage.required: (_) =>
                             'The organism must not be empty',
@@ -160,7 +170,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                         ),
                         const SizedBox(height: 16.0),
                         ReactiveTextField<String>(
-                          formControlName: 'sampler_phone_number',
+                          formControlName: 'generality.sampler_phone_number',
                           validationMessages: {
                             ValidationMessage.required: (_) =>
                             'The phone number must not be empty',
@@ -176,26 +186,20 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                         const SizedBox(height: 16.0),
                         Row(
                           children: [
-                            ReactiveCheckbox(formControlName: 'is_judiciary_process'),
+                            ReactiveCheckbox(formControlName: 'generality.is_judiciary_process'),
                             const Text('Procédure juridique')
                           ],
                         ),
                       ],
-
-
-
                   ),
                 )
               ),
             Step(
               title: const Text('Site'),
-              content: ReactiveFormBuilder(
-                form: buildSiteForm,
-                builder: (context, form, child) {
-                  return Column(
+              content: Column(
                     children: [
                       ReactiveTextField<String>(
-                        formControlName: 'site_name',
+                        formControlName: 'site.site_name',
                         validationMessages: {
                           ValidationMessage.required: (_) =>
                           'The site name must not be empty',
@@ -211,20 +215,18 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
                       const SizedBox(height: 16.0),
                       Row(
                         children: [
-                          ReactiveCheckbox(formControlName: 'is_site_polluted'),
+                          ReactiveCheckbox(formControlName: 'site.is_site_polluted'),
                           const Text('Site pollué')
                         ],
                       ),
                       const SizedBox(height: 16.0),
                       Row(
                         children: [
-                          ReactiveCheckbox(formControlName: 'is_new_arrival'),
+                          ReactiveCheckbox(formControlName: 'site.is_new_arrival'),
                           const Text('Nouvel arrivage')
                         ],
                       ),
                     ],
-                  );
-                },
               ),
             ),
             Step(
