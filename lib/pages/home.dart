@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sami/pages/create_recognition_sheet.dart';
 import 'package:sami/utils/palette.dart';
+import 'package:sami/widgets/current_position_map.dart';
 
 import 'package:sami/widgets/fab_with_icons.dart';
 import 'package:sami/widgets/fab_bottom_app_bar.dart';
@@ -15,15 +16,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    Center(child: Text("hello"),),
-    Center(
+  static  final List<Widget> _pages = <Widget>[
+    CurrentPositionMap(),
+    const Center(
       child: Icon(
         Icons.camera,
         size: 150,
       ),
     ),
-    Center(
+    const Center(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: TextField(
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     ),
-    Center(
+    const Center(
       child: Icon(
         Icons.camera,
         size: 150,
