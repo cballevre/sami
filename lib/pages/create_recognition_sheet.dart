@@ -45,7 +45,7 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
   String sampler_phone_number,
   bool is_judiciary_process,
   ) async {
-    await FirebaseFirestore.instance.collection("recognition_sheet").add({
+    await FirebaseFirestore.instance.collection("recognition_sheets").add({
       'sampler_firstname': sampler_firstname,
       'sampler_lastname': sampler_lastname,
       'sampler_organism': sampler_organism,

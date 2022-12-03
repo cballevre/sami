@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sami/pages/create_recognition_sheet.dart';
+import 'package:sami/pages/recognition_sheet_list.dart';
 import 'package:sami/utils/palette.dart';
 import 'package:sami/widgets/current_position_map.dart';
 
@@ -18,12 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   static  final List<Widget> _pages = <Widget>[
     CurrentPositionMap(),
-    const Center(
-      child: Icon(
-        Icons.camera,
-        size: 150,
-      ),
-    ),
+    const RecognitionSheetListPage(),
     const Center(
       child: Padding(
         padding: EdgeInsets.all(16.0),
