@@ -24,13 +24,13 @@ class _RecognitionSheetListPageState extends State<RecognitionSheetListPage> {
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, index) {
               Map<String, dynamic>? recognitionSheets = snapshot.data?.docs.elementAt(index).data();
+              DateTime dt = DateTime.fromMicrosecondsSinceEpoch((recognitionSheets?['created_at'] as Timestamp).microsecondsSinceEpoch);
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 elevation: 5,
                 child: InkWell(child: ListTile(
-                  leading: Icon(Icons.icecream),
-                  title: Text("List item ${recognitionSheets?['sampler_lastname']}"),
-                  subtitle: Text('Icream is good for health'),
+                  title: Text(recognitionSheets?['site_name'] ),
+                  subtitle: Text(dt.toString()),
                 ), onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
