@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sami/pages/recognition_sheet.dart';
 import 'package:sami/utils/palette.dart';
 
 class CreateRecognitionSheetPage extends StatefulWidget {
@@ -34,6 +35,12 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
               setState(() {
                 _index += 1;
               });
+            } else if(_index == 2) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const RecognitionSheetPage(),
+                ),
+              );
             }
           },
           onStepTapped: (int index) {
