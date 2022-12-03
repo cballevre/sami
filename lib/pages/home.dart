@@ -13,30 +13,45 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late PageController controller;
-  late int indexPage;
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    controller = PageController(initialPage: 1);
-    indexPage = controller.initialPage;
-  }
+  static const List<Widget> _pages = <Widget>[
+    Center(
+      child: Icon(
+        Icons.call,
+        size: 150,
+      ),
+    ),
+    Center(
+      child: Icon(
+        Icons.camera,
+        size: 150,
+      ),
+    ),
+    Center(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: TextField(
+          style: TextStyle(fontSize: 50),
+          decoration: InputDecoration(
+              labelText: 'Find contact',
+              labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ),
+    ),
+    Center(
+      child: Icon(
+        Icons.camera,
+        size: 150,
+      ),
+    ),
+  ];
 
-  String _lastSelected = 'TAB: 0';
-
-  void _selectedTab(int index) {
+  void _onItemTapped(int index) {
     setState(() {
-      _lastSelected = 'TAB: $index';
+      _selectedIndex = index;
     });
   }
-
-  void _selectedFab(int index) {
-    setState(() {
-      _lastSelected = 'FAB: $index';
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +59,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("osm"),
       ),
-      body: PageView(
-        children: <Widget>[
-          Center(
-            child: Text("Page : " + _lastSelected),
-          ),
-        ],
-        controller: controller,
-        onPageChanged: (p) {
-          setState(() {
-            indexPage = p;
-          });
-        },
+      body: IndexedStack(
+          index: _selectedIndex,
+          children: _pages
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -66,17 +72,17 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: FABBottomAppBar(
-        centerItemText: 'A',
-        color: Colors.grey,
-        selectedColor: Colors.red,
+        color: Colors.black,
+        selectedColor: Colors.orange,
+        backgroundColor: Colors.white,
         notchedShape: CircularNotchedRectangle(),
-        onTabSelected: _selectedTab,
+        onTabSelected: _onItemTapped,
         items: [
-          FABBottomAppBarItem(iconData: Icons.menu, text: 'This'),
-          FABBottomAppBarItem(iconData: Icons.layers, text: 'Is'),
-          FABBottomAppBarItem(iconData: Icons.dashboard, text: 'Bottom'),
-          FABBottomAppBarItem(iconData: Icons.info, text: 'Bar'),
-        ], backgroundColor: Colors.blueGrey,
+          FABBottomAppBarItem(iconData: Icons.home, text: 'Home'),
+          FABBottomAppBarItem(iconData: Icons.list, text: 'Reconnaissance'),
+          FABBottomAppBarItem(iconData: Icons.info, text: 'Infos'),
+          FABBottomAppBarItem(iconData: Icons.settings, text: 'Paramètres'),
+        ]
       ),
     );
   }

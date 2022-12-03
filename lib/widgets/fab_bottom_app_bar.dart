@@ -11,7 +11,6 @@ class FABBottomAppBarItem {
 class FABBottomAppBar extends StatefulWidget {
   FABBottomAppBar({
     required this.items,
-    required this.centerItemText,
     this.height: 60.0,
     this.iconSize: 24.0,
     required this.backgroundColor,
@@ -23,7 +22,6 @@ class FABBottomAppBar extends StatefulWidget {
     assert(this.items.length == 2 || this.items.length == 4);
   }
   final List<FABBottomAppBarItem> items;
-  final String centerItemText;
   final double height;
   final double iconSize;
   final Color backgroundColor;
@@ -59,12 +57,12 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
 
     return BottomAppBar(
       shape: widget.notchedShape,
+      color: widget.backgroundColor,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: items,
       ),
-      color: widget.backgroundColor,
     );
   }
 
@@ -76,11 +74,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: widget.iconSize),
-            Text(
-              widget.centerItemText ?? '',
-              style: TextStyle(color: widget.color),
-            ),
+            SizedBox(height: widget.iconSize)
           ],
         ),
       ),
