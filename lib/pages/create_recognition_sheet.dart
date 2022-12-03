@@ -28,6 +28,15 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
     'is_judiciary_process' : FormControl<bool>(value: false),
   });
 
+  FormGroup buildSiteForm() => fb.group(<String, Object>{
+    'position_latitude': FormControl<String>(),
+    'position_longitude': FormControl<String>(),
+    'position_altitude': FormControl<String>(),
+    'site_name': FormControl<String>(),
+    'is_site_polluted': FormControl<bool>(value: false),
+    'is_new_arrival': FormControl<bool>(value: false),
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +159,43 @@ class _CreateRecognitionSheetPageState extends State<CreateRecognitionSheetPage>
             ),
             Step(
               title: const Text('Site'),
-              content: Text('Content for Step 2'),
+              content: ReactiveFormBuilder(
+                form: buildSiteForm,
+                builder: (context, form, child) {
+                  return Column(
+                    children: [
+                      ReactiveTextField<String>(
+                        formControlName: 'site_name',
+                        validationMessages: {
+                          ValidationMessage.required: (_) =>
+                          'The site name must not be empty',
+                        },
+                        textInputAction: TextInputAction.done,
+                        decoration: const InputDecoration(
+                          labelText: 'Site name',
+                          helperText: '',
+                          helperStyle: TextStyle(height: 0.7),
+                          errorStyle: TextStyle(height: 0.7),
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          ReactiveCheckbox(formControlName: 'is_site_polluted'),
+                          const Text('Site pollué')
+                        ],
+                      ),
+                      const SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          ReactiveCheckbox(formControlName: 'is_new_arrival'),
+                          const Text('Nouvel arrivage')
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
             Step(
               title: const Text('Description pollution'),
