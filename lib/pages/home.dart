@@ -6,9 +6,7 @@ import 'package:sami/widgets/fab_with_icons.dart';
 import 'package:sami/widgets/fab_bottom_app_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
