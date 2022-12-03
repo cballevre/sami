@@ -4,9 +4,8 @@ import 'package:sami/pages/recognition_sheet_list.dart';
 import 'package:sami/utils/palette.dart';
 import 'package:sami/widgets/current_position_map.dart';
 
-import 'package:sami/widgets/fab_with_icons.dart';
 import 'package:sami/widgets/fab_bottom_app_bar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sami/widgets/custom_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -57,16 +56,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: SvgPicture.asset(
-            height: 50,
-            fit: BoxFit.fitHeight,
-            'assets/logo.svg',
-            color: Colors.white,
-          ),
-        backgroundColor: Palette.primary.shade500,
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(),
       body: IndexedStack(
           index: _selectedIndex,
           children: _pages

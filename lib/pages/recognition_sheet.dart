@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sami/utils/palette.dart';
-import 'package:sami/pages/create_sample.dart';
+import 'package:sami/widgets/custom_app_bar.dart';
 
 class RecognitionSheetPage extends StatefulWidget {
   const RecognitionSheetPage({super.key});
@@ -10,7 +9,6 @@ class RecognitionSheetPage extends StatefulWidget {
 }
 
 class _RecognitionSheetPageState extends State<RecognitionSheetPage> {
-  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +17,30 @@ class _RecognitionSheetPageState extends State<RecognitionSheetPage> {
     ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Nom d'un site"),
-          backgroundColor: Palette.primary.shade500,
-          centerTitle: true,
-        ),
+        appBar: CustomAppBar(),
         body:  Column(
             children: [
-              Row(
+              Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                Expanded(
+                  child: Column(children: [
+                    Container(height: 120.0, color: Colors.yellow),
+                    Container(height: 100.0, color: Colors.cyan),
+                  ]),
+                ),
+                Expanded(child: Container(color: Colors.amber)),
+              ]),
+
+            ])
+    );
+  }
+}
+
+/*
+Row(
                 children: [
+
                   ElevatedButton(
+
                     style: style,
                     onPressed: () {},
                     child: const Text('Photos'),
@@ -66,8 +78,5 @@ class _RecognitionSheetPageState extends State<RecognitionSheetPage> {
                   onPressed: () {},
                   child: const Text('Générer un PDF'),
                 ),
-              ]
-            )
-    );
-  }
-}
+
+*/
