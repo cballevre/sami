@@ -6,6 +6,7 @@ import 'package:sami/widgets/current_position_map.dart';
 
 import 'package:sami/widgets/fab_with_icons.dart';
 import 'package:sami/widgets/fab_bottom_app_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -57,7 +58,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SAMi"),
+        title: SvgPicture.asset(
+            height: 50,
+            fit: BoxFit.fitHeight,
+            'assets/logo.svg',
+            color: Colors.white,
+          ),
         backgroundColor: Palette.primary.shade500,
         centerTitle: true,
       ),

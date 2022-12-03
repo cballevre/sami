@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sami/utils/position_locator.dart';
@@ -16,7 +17,6 @@ class CurrentPositionMapState extends State<CurrentPositionMap> {
   late MapController _mapController;
   List<Marker> markers = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -29,12 +29,16 @@ class CurrentPositionMapState extends State<CurrentPositionMap> {
       _mapController.move(LatLng(currentPosition.latitude, currentPosition.longitude),  12);
 
       markers.add(Marker(
-      width: 80,
-        height: 80,
+        width: 100,
+        height: 90,
         point: LatLng(currentPosition.latitude, currentPosition.longitude),
-        builder: (ctx) => const FlutterLogo(
-          textColor: Colors.green,
-        )
+        builder: (ctx) => Column(children: [SvgPicture.asset(
+          height: 50,
+          fit: BoxFit.fitHeight,
+          'assets/marker.svg',
+        ),
+        const SizedBox(height: 8),
+        const Text('VOUS ÊTES ICI', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),)]),
       ));
     })
   };
@@ -47,12 +51,6 @@ class CurrentPositionMapState extends State<CurrentPositionMap> {
         center: LatLng(55.21723380513681, -7.299306291632042),
         zoom: 1,
       ),
-      nonRotatedChildren: [
-        AttributionWidget.defaultWidget(
-          source: 'OpenStreetMap contributors',
-          onSourceTapped: null,
-        ),
-      ],
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
