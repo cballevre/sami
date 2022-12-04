@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sami/utils/palette.dart';
 import 'package:sami/pages/recognition_sheet.dart';
-
 
 class RecognitionSheetListPage extends StatefulWidget {
   const RecognitionSheetListPage({super.key});
@@ -43,5 +41,4 @@ class _RecognitionSheetListPageState extends State<RecognitionSheetListPage> {
         },
         );
       }
-
 }

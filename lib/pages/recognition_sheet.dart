@@ -26,7 +26,35 @@ class _RecognitionSheetPageState extends State<RecognitionSheetPage> {
         body: Stack(
             alignment: Alignment.center,
             clipBehavior: Clip.none, children: [
-          Container(width: MediaQuery.of(context).size.width, height: (MediaQuery.of(context).size.height * 1/3), color: Colors.blueGrey),
+          Container(
+              width: MediaQuery.of(context).size.width, height: (MediaQuery.of(context).size.height * 1/3),
+              color: Colors.blueGrey,
+              child: Stack(
+                children: [
+
+                  const Image(
+                    image: AssetImage('assets/erika.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    color: Color.fromRGBO(62,62,60, 0.82),
+                  ),
+                  Positioned(
+                      top: 30,
+                      left: 32,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("NAUFRAGE ERIKA",style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 16),
+                          Text("48.4084369,-4.5346903",style: TextStyle(fontSize: 18, color: Colors.white))
+                        ],
+                      )
+                  ),
+
+                ],
+              )
+          ),
           Positioned(
             left: 0,
             right: 0,
@@ -37,6 +65,7 @@ class _RecognitionSheetPageState extends State<RecognitionSheetPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ActionRecognitionTile(size: size, iconAsset: 'assets/chemistry.svg', label: "GÉRER LES PRÉLÈVEMENTS", onPressed: () {
+                        print("GÉRER LES PRÉLÈVEMENTS");
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const SampleListPage(),

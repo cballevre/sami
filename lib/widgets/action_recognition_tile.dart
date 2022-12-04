@@ -17,11 +17,12 @@ class ActionRecognitionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: _size, height: _size, child: Card(
-      elevation: 4,
-      child:  InkWell(
+    return InkWell(
+
         onTap: _onPressed,
-        child:
+        child:SizedBox(width: _size, height: _size, child: Card(
+      elevation: 4,
+      child:
         Padding(padding: EdgeInsets.all(8),
     child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
