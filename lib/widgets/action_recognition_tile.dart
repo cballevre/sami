@@ -19,7 +19,12 @@ class ActionRecognitionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
 
-        onTap: _onPressed,
+        onTap: () {
+          print('onTap');
+          if(_onPressed != null) {
+            _onPressed!();
+          }
+        },
         child:SizedBox(width: _size, height: _size, child: Card(
       elevation: 4,
       child:

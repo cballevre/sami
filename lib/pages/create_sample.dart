@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sami/utils/palette.dart';
 
+import '../widgets/custom_app_bar.dart';
+
 class CreateSamplePage extends StatefulWidget {
   const CreateSamplePage({super.key});
 
@@ -9,18 +11,32 @@ class CreateSamplePage extends StatefulWidget {
 }
 
 class _CreateSamplePageState extends State<CreateSamplePage> {
-  int _index = 0;
+
+  int _selectedIndex = 0;
+
+  static  final List<Widget> _pages = <Widget>[
+
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Créer un prélévement"),
-        backgroundColor: Palette.primary.shade500,
-        centerTitle: true,
-      ),
-      body:  Text('etst'));
+      appBar: CustomAppBar(title: "Créer un prélévement"),
+      body: Column(
+        children: [
+          IndexedStack(
+              index: _selectedIndex,
+              children: _pages
+          ),
+        ],
+      )
+    );
   }
 }

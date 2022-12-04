@@ -14,7 +14,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: _title != null ? Text('title') : SvgPicture.asset(
+      title: _title != null ? Text(_title!) : SvgPicture.asset(
         height: 50,
         fit: BoxFit.fitHeight,
         'assets/logo.svg',
