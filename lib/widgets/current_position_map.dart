@@ -26,7 +26,7 @@ class CurrentPositionMapState extends State<CurrentPositionMap> {
 
   Future<Set> searchPosition() async => {
     PositionLocator.determinePosition().then((currentPosition) {
-      _mapController.move(LatLng(currentPosition.latitude, currentPosition.longitude),  12);
+      _mapController.move(LatLng(currentPosition.latitude, currentPosition.longitude),  14);
 
       markers.add(Marker(
         width: 100,
@@ -43,18 +43,31 @@ class CurrentPositionMapState extends State<CurrentPositionMap> {
     })
   };
 
+  String cleShom = "d4e9uo5qizxqej9spjomg1ie";
+
   @override
   Widget build(BuildContext context) {
+
     return FlutterMap(
       mapController: _mapController,
       options: MapOptions(
-        center: LatLng(55.21723380513681, -7.299306291632042),
-        zoom: 1,
+        center: LatLng(48.208397340730414, -4.733523208236653),
+        zoom: 10,
       ),
       children: [
         TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'com.example.app',
+          urlTemplate: "https://services.data.shom.fr/" +
+              "d4e9uo5qizxqej9spjomg1ie" +
+              "/wmts?VERSION=1.0.0" +
+              "&REQUEST=GetTile" +
+              "&SERVICE=WMTS" +
+              "&FORMAT=image/png" +
+              "&LAYER=RASTER_MARINE_3857_WMTS" +
+              "&TILEMATRIXSET=3857" +
+              "&STYLE=normal" +
+              "&TILEMATRIX={z}" +
+              "&TILEROW={y}" +
+              "&TILECOL={x}"
         ),
         MarkerLayer(markers: markers)
       ],
